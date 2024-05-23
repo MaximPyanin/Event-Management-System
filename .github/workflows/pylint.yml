@@ -1,0 +1,35 @@
+name: linter
+
+on:
+  push:
+    branches: [ "main","feature/http-server"]
+  pull_request:
+    branches: [ "main","feature/http-server"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.5.1"]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v2
+      with:
+        poetry-version: ${{ matrix.poetry-version }}
+    - name: Install dependencies
+      run: |
+        poetry install
+    - name: Analysing the code with pylint
+      run: |
+        poetry run pylint --disable=import-error,missing-docstring,duplicate-code,inconsistent-return-statements $(git ls-files '*.py')
