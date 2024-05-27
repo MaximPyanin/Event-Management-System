@@ -1,5 +1,3 @@
-import asyncio
-
 from twilio.rest import Client
 from twilio.rest.api.v2010.account.message import MessageInstance
 from twilio.http.async_http_client import AsyncTwilioHttpClient

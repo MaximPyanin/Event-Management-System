@@ -1,16 +1,13 @@
-from typing import Optional
-from uuid import UUID
-
-from sqlalchemy import ForeignKey, text, CheckConstraint
+from sqlalchemy import ForeignKey, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
 from app.constants.tags import Tags
 from app.database.base import Base
 from app.constants.types import Types
-from app.constants.roles import Roles
+
 from app.database.models.feedback import Feedback
-from app.database.models.role import Role
+
 from app.database.models.tag import Tag
 from app.database.models.user import User
 from app.database.models.registration import Registration

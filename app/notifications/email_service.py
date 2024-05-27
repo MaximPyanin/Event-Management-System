@@ -1,11 +1,9 @@
 import asyncio
 from sendgrid import SendGridAPIClient
-import sendgrid
-import os
+
 from sendgrid.helpers.mail import *
-from sendgrid.helpers.mail import Content, Email, Mail, To
+from sendgrid.helpers.mail import Email, Mail, To
 from app.services.config_service import AppConfig
-from app.constants.notifications import Notifications
 
 
 class EmailService:

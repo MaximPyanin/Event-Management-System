@@ -11,8 +11,6 @@ class FeedbackCreationDto(BaseModel):
     event_id: Types.uuid_pk
     user_id: Types.uuid_pk
 
-    # or user id myself through token
-
 
 class FeedbackUpdateDto(BaseModel):
     comment: str

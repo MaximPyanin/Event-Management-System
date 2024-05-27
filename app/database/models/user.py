@@ -1,5 +1,4 @@
 from typing import Optional
-from uuid import UUID
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -19,6 +18,7 @@ class User(Base):
     username: Mapped[str]
     deleted_at: Mapped[Optional[datetime]]
     email: Mapped[str]
+    phone: Mapped[str]
     password: Mapped[bytes]
     role_id: Mapped[Roles] = mapped_column(ForeignKey("roles.id", ondelete="CASCADE"))
 
