@@ -10,6 +10,9 @@ packages = [{include = "app"}]
 python = "^3.11"
 pylint = "^3.2.2"
 black = "^24.4.2"
+sqlalchemy = "^2.0.30"
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
 
 
 [build-system]
