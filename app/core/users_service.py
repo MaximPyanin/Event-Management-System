@@ -10,5 +10,5 @@ class UsersService:
     async def create_user(self, user_data: dict) -> UUID:
         user_data["password"] = HashService.hash_password(user_data["password"])
         user_data.update({"role_id": user_data.pop("role")})
-        res = await self.users_repository.create_user(user_data)
+        res = await self.users_repository.insert_one(user_data)
         return res.id
