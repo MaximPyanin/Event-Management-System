@@ -6,7 +6,7 @@ from fastapi import APIRouter
 class UsersRouter:
     def __init__(self, users_service: UsersService):
         self.users_service = users_service
-        self.router = APIRouter(prefix="/api/v1", tags=["registration"])
+        self.router = APIRouter(prefix="/api/v1/users", tags=["users"])
 
     def get_router(self) -> APIRouter:
         self.router.post("/register")(self.register)
