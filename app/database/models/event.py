@@ -1,6 +1,6 @@
 from sqlalchemy import ForeignKey, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import datetime
+from datetime import date
 
 from app.constants.tags import Tags
 from app.database.base import Base
@@ -17,7 +17,7 @@ class Event(Base):
     __tablename__ = "events"
     id: Mapped[Types.uuid_pk]
     location: Mapped[str]
-    date: Mapped[datetime]
+    date: Mapped[date]
     created_at: Mapped[Types.created_at]
     description: Mapped[str]
     tag_id: Mapped[Tags] = mapped_column(ForeignKey("tags.id", ondelete="CASCADE"))

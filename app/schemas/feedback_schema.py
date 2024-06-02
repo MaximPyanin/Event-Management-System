@@ -14,3 +14,4 @@ class FeedbackCreationDto(BaseModel):
 
 class FeedbackUpdateDto(BaseModel):
     comment: str
+    rating: float

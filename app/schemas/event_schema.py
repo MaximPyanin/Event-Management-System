@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import date,datetime
 
 
 from pydantic import BaseModel, field_validator
@@ -10,15 +10,15 @@ from app.constants.tags import Tags
 
 class EventCreationDto(BaseModel):
     location: str
-    date: datetime
+    date: date
     description: str
     tag: Tags
     organizer_id: uuid.UUID
 
     @field_validator("date")
     @classmethod
-    def date_check(cls, v: datetime):
-        if v <= datetime.now():
+    def date_check(cls, v: date):
+        if v <= datetime.utcnow().date():
             raise ValueError("date must be in the future")
         return v
 
