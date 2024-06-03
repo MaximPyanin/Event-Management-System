@@ -1,4 +1,6 @@
-from sqlalchemy import ForeignKey, CheckConstraint
+import datetime
+
+from sqlalchemy import ForeignKey, CheckConstraint, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
@@ -8,11 +10,11 @@ from app.database.models.event import Event
 
 from app.database.models.user import User
 
-
 class Feedback(Base):
     __table_name__ = "feedbacks"
     id: Mapped[Types.uuid_pk]
     comment: Mapped[str]
+    updated_at: Mapped[datetime.datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"),onupdate=datetime.datetime.utcnow)
     rating: Mapped[float]
     event_id: Mapped[Types.uuid_pk] = mapped_column(
         ForeignKey("events.id", ondelete="CASCADE")

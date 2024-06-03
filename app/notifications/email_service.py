@@ -1,8 +1,6 @@
-import asyncio
 from sendgrid import SendGridAPIClient
 
 from sendgrid.helpers.mail import *
-from sendgrid.helpers.mail import Email, Mail, To
 from app.services.config_service import AppConfig
 
 
@@ -12,11 +10,10 @@ class EmailService:
         self.__client = SendGridAPIClient(self.config.SENDGRID_API_KEY)
         self.sender = Email(self.config.SENDER_EMAIL)
 
-    async def send_email(self, to_email: str, **kwargs):
+    def send_email(self, to_email: str, **kwargs):
         match kwargs.get("content"):
             case "event_registration":
-                return asyncio.create_task(
-                    self.__client.send(
+                return self.__client.send(
                         Mail(
                             self.sender,
                             To(to_email),
@@ -26,10 +23,9 @@ class EmailService:
                             ),
                         )
                     )
-                )
+
             case "event_cancellation":
-                return asyncio.create_task(
-                    self.__client.send(
+                return self.__client.send(
                         Mail(
                             self.sender,
                             To(to_email),
@@ -39,4 +35,4 @@ class EmailService:
                             ),
                         )
                     )
-                )
+
