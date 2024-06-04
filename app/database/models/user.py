@@ -15,8 +15,7 @@ from app.database.models.role import Role
 class User(Base):
     __tablename__ = "users"
     id: Mapped[Types.uuid_pk]
-    username: Mapped[str]
-    deleted_at: Mapped[Optional[datetime]]
+    username: Mapped[str] = mapped_column(unique=True)
     email: Mapped[str]
     phone: Mapped[str]
     password: Mapped[bytes]

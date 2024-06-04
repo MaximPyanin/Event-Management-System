@@ -14,7 +14,7 @@ class Feedback(Base):
     __table_name__ = "feedbacks"
     id: Mapped[Types.uuid_pk]
     comment: Mapped[str]
-    updated_at: Mapped[datetime.datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"),onupdate=datetime.datetime.utcnow)
+    updated_at: Mapped[datetime.datetime] = mapped_column(server_default=text("CURRENT_TIMESTAMP AT TIME ZONE 'UTC' "),onupdate=datetime.datetime.utcnow)
     rating: Mapped[float]
     event_id: Mapped[Types.uuid_pk] = mapped_column(
         ForeignKey("events.id", ondelete="CASCADE")

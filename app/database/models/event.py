@@ -38,4 +38,4 @@ class Event(Base):
         back_populates="events", uselist=True, secondary=Registration.__table__
     )
 
-    __table_args__ = (CheckConstraint("date > CURRENT_TIMESTAMP"),)
+    __table_args__ = (CheckConstraint("date > CURRENT_DATE"),)

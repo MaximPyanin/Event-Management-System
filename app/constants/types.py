@@ -12,5 +12,5 @@ class Types(Enum):
         UUID, mapped_column(primary_key=True, server_default=text("gen_random_uuid()"))
     ]
     created_at: Annotated[
-        datetime, mapped_column(server_default=text("CURRENT_TIMESTAMP"))
+        datetime, mapped_column(server_default=text("CURRENT_TIMESTAMP AT TIME ZONE 'UTC' "))
     ]
