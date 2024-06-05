@@ -1,3 +1,4 @@
+import datetime
 from uuid import UUID
 
 from sqlalchemy import insert, update, delete, select, UnaryExpression
@@ -26,13 +27,15 @@ class EventsRepository:
             res = await session.execute(stmt)
             return res.scalars_one()
 
-    async def delete_one(self,event_id: UUID):
+    async def delete_one(self, event_id: UUID):
         async with self.db.get_sessionmaker() as session:
             stmt = delete(self.model).where(self.model.id == event_id)
             res = await session.execute(stmt)
             return res.scalars_one()
 
-    async def get_many(self,limit:int,offset:int, sort: UnaryExpression | None,data:dict):
+    async def get_many(
+        self, limit: int, offset: int, sort: UnaryExpression | None, data: dict
+    ):
         async with self.db.get_sessionmaker() as session:
             stmt = (
                 select(self.model)
@@ -46,3 +49,16 @@ class EventsRepository:
             )
             res = await session.execute(stmt)
             return res.unique().scalars().all()
+
+    async def get_all(self, date: datetime.date) -> list[Event]:
+        async with self.db.get_sessionmaker() as session:
+            stmt = (
+                select(self.model)
+                .options(selectinload(self.model.users))
+                .where(self.model.date == date)
+            )
+            res = await session.execute(stmt)
+            return res.scalars().all()
+
+
+# by date what

@@ -2,4 +2,4 @@ from enum import Enum
 
 
 class Notifications(Enum):
-    sms_body = "reminding about upcoming event"
+    SMS_BODY = "reminding about upcoming event"

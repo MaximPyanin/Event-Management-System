@@ -14,25 +14,24 @@ class EmailService:
         match kwargs.get("content"):
             case "event_registration":
                 return self.__client.send(
-                        Mail(
-                            self.sender,
-                            To(to_email),
-                            subject="Registration Confirmation",
-                            plain_text_content=PlainTextContent(
-                                "Thank you for registering for our event! We're excited to have you join us. If you have any questions, feel free to reach out"
-                            ),
-                        )
+                    Mail(
+                        self.sender,
+                        To(to_email),
+                        subject="Registration Confirmation",
+                        plain_text_content=PlainTextContent(
+                            "Thank you for registering for our event! We're excited to have you join us. If you have any questions, feel free to reach out"
+                        ),
                     )
+                )
 
             case "event_cancellation":
                 return self.__client.send(
-                        Mail(
-                            self.sender,
-                            To(to_email),
-                            subject="Event Cancellation",
-                            plain_text_content=PlainTextContent(
-                                "We regret to inform you that the event has been canceled. We apologize for any inconvenience this may cause. If you have any concerns or need further assistance, please don't hesitate to contact us."
-                            ),
-                        )
+                    Mail(
+                        self.sender,
+                        To(to_email),
+                        subject="Event Cancellation",
+                        plain_text_content=PlainTextContent(
+                            "We regret to inform you that the event has been canceled. We apologize for any inconvenience this may cause. If you have any concerns or need further assistance, please don't hesitate to contact us."
+                        ),
                     )
-
+                )

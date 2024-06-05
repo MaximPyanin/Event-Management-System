@@ -13,6 +13,6 @@ class UsersService:
         res = await self.users_repository.insert_one(user_data)
         return res.id
 
-    async def get_email(self,user_id: UUID) -> str:
+    async def get_email(self, user_id: UUID) -> str:
         res = await self.users_repository.get_one(user_id)
         return res.email
