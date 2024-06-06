@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from typing import AsyncGenerator
 
-
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.events_router import EventsRouter
 from app.api.feedbacks_router import FeedbacksRouter
 from app.api.healthcheck_router import HealthcheckRouter
@@ -40,6 +40,14 @@ class APIHandler:
         self.app.include_router(self.healthcheck_router.get_router())
         self.app.include_router(self.feedback_router.get_router())
         self.app.include_router(self.events_router.get_router())
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins = 'https://domain.com',
+            allow_credentials = True,
+            allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
+            allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
+                           "Authorization"],
+        )
 
     async def lifespan(self, app: FastAPI) -> AsyncGenerator:
         self.scheduler_service.start()

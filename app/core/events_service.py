@@ -52,3 +52,8 @@ class EventsService:
             parsed_data["username"] = data.get("organizer")
         if data.get("from_date"):
             parsed_data[""]
+#what  return typee
+"""
+limit:int,offset:int,sort: str | None,locations: str | None,from_date: datetime | None,to_date: datetime | None, tags: str | None,organizer: str | None) -> list[Event]:
+        if 
+"""
