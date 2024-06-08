@@ -1,12 +1,10 @@
-from fastapi import APIRouter, HTTPException
-from sqlalchemy import select
+from fastapi import APIRouter
 
-from app.database.db import DB
+
 
 
 class HealthcheckRouter:
-    def __init__(self, db: DB):
-        self.db = db
+    def __init__(self):
         self.router = APIRouter(prefix="/api/v1", tags=["healthcheck"])
 
     def get_router(self) -> APIRouter:
@@ -14,9 +12,4 @@ class HealthcheckRouter:
         return self.router
 
     async def check_connection(self) -> dict:
-        try:
-            async with self.db.get_engine().connect() as connection:
-                await connection.execute(select(1))
-            return {"status": "ok"}
-        except Exception:
-            raise HTTPException(status_code=500, detail="Database connection error")
+        return {"status": "ok"}

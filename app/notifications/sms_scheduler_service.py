@@ -1,18 +1,17 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from app.notifications.sms_service import SmsService
+
+from typing import Callable, Coroutine, Any
 
 
 class SmsSchedulerService:
-    def __init__(self, sms_service: SmsService):
+    def __init__(self):
         self.scheduler = AsyncIOScheduler()
-        self.set()
-        self.sms_service = sms_service
 
-    def set(self):
+    def add_job(self,func: Callable[...,Any] | Coroutine[Any,Any,Any]):
         return self.scheduler.add_job(
-            self.sms_service.send_reminder,
+            func,
             CronTrigger(minute="0", hour="8", day="*", month="*", day_of_week="*"),
         )
 

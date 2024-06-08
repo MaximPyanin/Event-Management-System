@@ -18,7 +18,7 @@ class EventCreationDto(BaseModel):
     @field_validator("date")
     @classmethod
     def date_check(cls, v: date):
-        if v <= datetime.now().date():
+        if v < datetime.utcnow().date():
             raise ValueError("date must be in future")
         return v
 

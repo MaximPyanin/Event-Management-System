@@ -11,7 +11,7 @@ from app.api.users_router import UsersRouter
 from fastapi import FastAPI
 
 from app.notifications.sms_scheduler_service import SmsSchedulerService
-
+from app.notifications.sms_service import SmsService
 
 class APIHandler:
     def __init__(
@@ -22,9 +22,11 @@ class APIHandler:
         registrations_router: RegistrationsRouter,
         users_router: UsersRouter,
         scheduler_service: SmsSchedulerService,
+        sms_service: SmsService
     ):
         self.events_router = events_router
         self.feedback_router = feedback_router
+        self.sms_service = sms_service
         self.healthcheck_router = healthcheck_router
         self.registrations_router = registrations_router
         self.users_router = users_router
@@ -50,6 +52,7 @@ class APIHandler:
         )
 
     async def lifespan(self, app: FastAPI) -> AsyncGenerator:
+        self.scheduler_service.add_job(self.sms_service.send_reminder)
         self.scheduler_service.start()
         yield
         self.scheduler_service.stop()
