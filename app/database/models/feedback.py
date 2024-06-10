@@ -5,25 +5,27 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 from app.constants.types import Types
+from typing import TYPE_CHECKING
 
-from app.database.models.event import Event
+if TYPE_CHECKING:
+ from app.database.models.event import Event
 
 from app.database.models.user import User
 
 
 class Feedback(Base):
-    __table_name__ = "feedbacks"
-    id: Mapped[Types.uuid_pk]
+    __tablename__ = "feedbacks"
+    id: Mapped[Types.UUID_PK]
     comment: Mapped[str]
     updated_at: Mapped[datetime.datetime] = mapped_column(
-        server_default=text("CURRENT_TIMESTAMP AT TIME ZONE 'UTC' "),
+        server_default=text("CURRENT_TIMESTAMP"),
         onupdate=datetime.datetime.utcnow,
     )
     rating: Mapped[float]
-    event_id: Mapped[Types.uuid_pk] = mapped_column(
+    event_id: Mapped[Types.UUID_PK] = mapped_column(
         ForeignKey("events.id", ondelete="CASCADE")
     )
-    user_id: Mapped[Types.uuid_pk] = mapped_column(
+    user_id: Mapped[Types.UUID_PK] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE")
     )
 

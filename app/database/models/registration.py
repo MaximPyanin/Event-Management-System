@@ -7,11 +7,11 @@ from app.constants.types import Types
 
 class Registration(Base):
     __tablename__ = "registrations"
-    id: Mapped[Types.uuid_pk]
-    created_at: Mapped[Types.created_at]
-    user_id: Mapped[Types.uuid_pk] = mapped_column(
+    id: Mapped[Types.UUID_PK]
+    created_at: Mapped[Types.CREATED_AT]
+    user_id: Mapped[Types.UUID_PK] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE")
     )
-    event_id: Mapped[Types.uuid_pk] = mapped_column(
+    event_id: Mapped[Types.UUID_PK] = mapped_column(
         ForeignKey("events.id", ondelete="CASCADE")
     )

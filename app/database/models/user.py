@@ -6,15 +6,17 @@ from datetime import datetime
 from app.database.base import Base
 from app.constants.types import Types
 from app.constants.roles import Roles
-from app.database.models.event import Event
-from app.database.models.feedback import Feedback
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+ from app.database.models.event import Event
+ from app.database.models.feedback import Feedback
 from app.database.models.registration import Registration
 from app.database.models.role import Role
 
 
 class User(Base):
     __tablename__ = "users"
-    id: Mapped[Types.uuid_pk]
+    id: Mapped[Types.UUID_PK]
     username: Mapped[str] = mapped_column(unique=True)
     email: Mapped[str]
     phone: Mapped[str]

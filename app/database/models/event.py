@@ -15,13 +15,13 @@ from app.database.models.registration import Registration
 
 class Event(Base):
     __tablename__ = "events"
-    id: Mapped[Types.uuid_pk]
+    id: Mapped[Types.UUID_PK]
     location: Mapped[str]
     date: Mapped[date]
-    created_at: Mapped[Types.created_at]
+    created_at: Mapped[Types.CREATED_AT]
     description: Mapped[str]
     tag_id: Mapped[Tags] = mapped_column(ForeignKey("tags.id", ondelete="CASCADE"))
-    organizer_id: Mapped[Types.uuid_pk] = mapped_column(
+    organizer_id: Mapped[Types.UUID_PK] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE")
     )
 
@@ -38,4 +38,4 @@ class Event(Base):
         back_populates="events", uselist=True, secondary=Registration.__table__
     )
 
-    __table_args__ = (CheckConstraint("date > CURRENT_DATE"),)
+    __table_args__ = (CheckConstraint("date >= CURRENT_DATE "),)
