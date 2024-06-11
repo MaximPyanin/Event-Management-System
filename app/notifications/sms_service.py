@@ -24,7 +24,7 @@ class SmsService:
 
     async def send_reminder(self) -> int:
         coming_events = await self.events_repository.get_all(
-            datetime.datetime.now().date()
+            datetime.datetime.utcnow().date()
         )
         users = [user for event in coming_events for user in event.users]
         for user in users:
