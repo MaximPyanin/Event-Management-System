@@ -7,6 +7,8 @@ class AppConfigError(Exception):
 
 class AppConfig:
     POSTGRES_URI: str
+    PRIVATE_KEY_PATH: str
+    PUBLIC_KEY_PATH: str
 
     SENDER_EMAIL: str
 

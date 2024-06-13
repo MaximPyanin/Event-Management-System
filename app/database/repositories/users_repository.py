@@ -22,3 +22,9 @@ class UsersRepository:
             stmt = select(self.model).where(self.model.id == id)
             res = await session.execute(stmt)
             return res
+
+    async def get_one_by_username(self,username: str):
+        async with self.db.get_sessionmaker() as session:
+            stmt = select(self.model).where(self.model.username == username)
+            res = await session.execute(stmt)
+            return res
