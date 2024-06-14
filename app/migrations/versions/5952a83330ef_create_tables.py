@@ -89,9 +89,7 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.CheckConstraint("date >= CURRENT_DATE "),
-        sa.ForeignKeyConstraint(
-            ["organizer_id"], ["users.id"], ondelete="CASCADE"
-        ),
+        sa.ForeignKeyConstraint(["organizer_id"], ["users.id"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(["tag_id"], ["tags.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -124,9 +122,7 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.CheckConstraint("rating > 0 and rating <= 10 "),
-        sa.ForeignKeyConstraint(
-            ["event_id"], ["events.id"], ondelete="CASCADE"
-        ),
+        sa.ForeignKeyConstraint(["event_id"], ["events.id"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -156,9 +152,7 @@ def upgrade() -> None:
             server_default=sa.text("gen_random_uuid()"),
             nullable=False,
         ),
-        sa.ForeignKeyConstraint(
-            ["event_id"], ["events.id"], ondelete="CASCADE"
-        ),
+        sa.ForeignKeyConstraint(["event_id"], ["events.id"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )

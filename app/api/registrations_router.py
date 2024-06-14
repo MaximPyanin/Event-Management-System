@@ -1,10 +1,11 @@
 from uuid import UUID
 
+from app.auth.auth_service import AuthService
 from app.core.users_service import UsersService
 from app.schemas.registration_schema import RegistrationDto
 from app.core.registrations_service import RegistrationsService
 from app.notifications.email_service import EmailService
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 
 class RegistrationsRouter:
@@ -13,12 +14,16 @@ class RegistrationsRouter:
         email_service: EmailService,
         registration_service: RegistrationsService,
         users_service: UsersService,
+        auth_service: AuthService,
     ):
         self.email_service = email_service
+        self.auth_service = auth_service
         self.registration_service = registration_service
         self.users_service = users_service
         self.router = APIRouter(
-            prefix="/api/v1/registrations", tags=["event_registration"]
+            prefix="/api/v1/registrations",
+            tags=["event_registration"],
+            dependencies=[Depends(self.auth_service.validate_user)],
         )
 
     def get_router(self) -> APIRouter:

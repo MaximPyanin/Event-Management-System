@@ -5,4 +5,3 @@ class Tags(Enum):
     CONCERT = "CONCERT"
     BALLET = "BALLET"
     FOOTBALL = "FOOTBALL"
-

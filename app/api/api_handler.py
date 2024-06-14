@@ -13,6 +13,7 @@ from fastapi import FastAPI
 from app.notifications.sms_scheduler_service import SmsSchedulerService
 from app.notifications.sms_service import SmsService
 
+
 class APIHandler:
     def __init__(
         self,
@@ -22,7 +23,7 @@ class APIHandler:
         registrations_router: RegistrationsRouter,
         users_router: UsersRouter,
         scheduler_service: SmsSchedulerService,
-        sms_service: SmsService
+        sms_service: SmsService,
     ):
         self.events_router = events_router
         self.feedback_router = feedback_router
@@ -44,11 +45,16 @@ class APIHandler:
         self.app.include_router(self.events_router.get_router())
         self.app.add_middleware(
             CORSMiddleware,
-            allow_origins = 'https://domain.com',
-            allow_credentials = True,
+            allow_origins="https://domain.com",
+            allow_credentials=True,
             allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
-            allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
-                           "Authorization"],
+            allow_headers=[
+                "Content-Type",
+                "Set-Cookie",
+                "Access-Control-Allow-Headers",
+                "Access-Control-Allow-Origin",
+                "Authorization",
+            ],
         )
 
     async def lifespan(self, app: FastAPI) -> AsyncGenerator:

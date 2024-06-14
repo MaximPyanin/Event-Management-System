@@ -1,8 +1,6 @@
 from fastapi import APIRouter
 
 
-
-
 class HealthcheckRouter:
     def __init__(self):
         self.router = APIRouter(prefix="/api/v1", tags=["healthcheck"])

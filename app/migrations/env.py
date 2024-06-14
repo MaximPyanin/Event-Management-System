@@ -13,7 +13,11 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-config.set_main_option('sqlalchemy.url',"postgresql+asyncpg://postgres:qwrqer325345@localhost:5432/postgres" + "?async_fallback=True")
+config.set_main_option(
+    "sqlalchemy.url",
+    "postgresql+asyncpg://postgres:qwrqer325345@localhost:5432/postgres"
+    + "?async_fallback=True",
+)
 
 from app.database.base import Base
 from app.database.models.event import Event
@@ -22,6 +26,7 @@ from app.database.models.feedback import Feedback
 from app.database.models.tag import Tag
 from app.database.models.user import User
 from app.database.models.role import Role
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
@@ -73,7 +78,9 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata,compare_server_default=True
+            connection=connection,
+            target_metadata=target_metadata,
+            compare_server_default=True,
         )
 
         with context.begin_transaction():

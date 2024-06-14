@@ -1,8 +1,9 @@
 import datetime
 from uuid import UUID
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
+from app.auth.auth_service import AuthService
 from app.constants.tags import Tags
 from app.database.models.event import Event
 from app.schemas.event_schema import EventCreationDto
@@ -11,24 +12,29 @@ from app.schemas.event_schema import EventUpdateDto
 
 
 class EventsRouter:
-    def __init__(self, events_service: EventsService):
+    def __init__(self, events_service: EventsService, auth_service: AuthService):
         self.events_service = events_service
+        self.auth_service = auth_service
         self.router = APIRouter(prefix="/api/v1/events", tags=["Events"])
 
     def get_router(self) -> APIRouter:
-        self.router.post("/")(self.create_event)
-        self.router.put("/{event_id}")(self.update_event)
-        self.router.delete("/{event_id}")(self.delete_event)
+        self.router.post("/", dependencies=[Depends(self.auth_service.validate_user)])(
+            self.create_event
+        )
+        self.router.put(
+            "/{event_id}", dependencies=[Depends(self.auth_service.validate_user)]
+        )(self.update_event)
+        self.router.delete(
+            "/{event_id}", dependencies=[Depends(self.auth_service.validate_user)]
+        )(self.delete_event)
         self.router.get("/")(self.get_events)
         return self.router
 
     # advanced search , how to call path inside routers of features for post here events/?
     async def create_event(self, event_data: EventCreationDto) -> dict:
         event_id = await self.events_service.create_event(event_data.model_dump())
-        return {"event_id": event_id}  # as key event id or just id
+        return {"event_id": event_id}
 
-    # for dele te update whsat pathh
-    # return event
     async def update_event(self, event_id: UUID, data: EventUpdateDto) -> Event:
         return await self.events_service.update_event_by_id(data.model_dump(), event_id)
 

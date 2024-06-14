@@ -1,14 +1,20 @@
 from uuid import UUID
 
+from app.auth.auth_service import AuthService
 from app.core.feedbacks_service import FeedbacksService
 from app.schemas.feedback_schema import FeedbackCreationDto, FeedbackUpdateDto
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 
 class FeedbacksRouter:
-    def __init__(self, feedbacks_service: FeedbacksService):
+    def __init__(self, feedbacks_service: FeedbacksService, auth_service: AuthService):
         self.feedbacks_service = feedbacks_service
-        self.router = APIRouter(prefix="/api/v1/feedbacks", tags=["feedbacks"])
+        self.auth_service = auth_service
+        self.router = APIRouter(
+            prefix="/api/v1/feedbacks",
+            tags=["feedbacks"],
+            dependencies=[Depends(self.auth_service.validate_user)],
+        )
 
     def get_router(self) -> APIRouter:
         self.router.post("/")(self.create_feedback)

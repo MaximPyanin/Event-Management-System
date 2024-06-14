@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -7,9 +8,10 @@ from app.database.base import Base
 from app.constants.types import Types
 from app.constants.roles import Roles
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
- from app.database.models.event import Event
- from app.database.models.feedback import Feedback
+    from app.database.models.event import Event
+    from app.database.models.feedback import Feedback
 from app.database.models.registration import Registration
 from app.database.models.role import Role
 
@@ -21,6 +23,8 @@ class User(Base):
     email: Mapped[str]
     phone: Mapped[str]
     password: Mapped[bytes]
+    refresh_token: Mapped[UUID | None]
+    expired_at: Mapped[datetime | None]
     role_id: Mapped[Roles] = mapped_column(ForeignKey("roles.id", ondelete="CASCADE"))
 
     role: Mapped["Role"] = relationship(back_populates="users", uselist=False)

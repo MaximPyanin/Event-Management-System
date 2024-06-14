@@ -5,4 +5,3 @@ class Roles(Enum):
     ADMIN = "ADMIN"
     ORGANIZER = "ORGANIZER"
     ATTENDEE = "ATTENDEE"
-

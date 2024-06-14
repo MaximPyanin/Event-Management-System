@@ -4,7 +4,7 @@ from app.constants.roles import Roles
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
- from app.database.models.user import User
+    from app.database.models.user import User
 
 
 class Role(Base):

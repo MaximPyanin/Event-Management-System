@@ -8,7 +8,7 @@ from app.constants.types import Types
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
- from app.database.models.event import Event
+    from app.database.models.event import Event
 
 from app.database.models.user import User
 
