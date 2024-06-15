@@ -4,6 +4,9 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -15,7 +18,7 @@ if config.config_file_name is not None:
 
 config.set_main_option(
     "sqlalchemy.url",
-    "postgresql+asyncpg://postgres:qwrqer325345@localhost:5432/postgres"
+    os.getenv("POSTGRES_URI")
     + "?async_fallback=True",
 )
 

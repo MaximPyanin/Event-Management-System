@@ -32,10 +32,11 @@ class AuthorizationRouter:
         }
 
     async def refresh(self, refresh_token: RefreshToken) -> dict:
-        user_id, role = await self.auth_service.validate_refresh_token(
+        user_id, role = await self.auth_service.get_by_refresh_token(
             refresh_token.refresh_token
         )
         return {
             "access_token": self.auth_service.create_access_token(user_id, role),
+            "refresh_token":self.auth_service.create_refresh_token(user_id),
             "token_type": "bearer",
         }

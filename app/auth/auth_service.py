@@ -53,7 +53,7 @@ class AuthService:
         )
         return refresh_token
 
-    async def validate_refresh_token(self, token: UUID) -> tuple:
+    async def get_by_refresh_token(self, token: UUID) -> tuple:
         user = await self.users_repository.get_one_by_token(token)
         if not user:
             raise Exceptions.AUTHENTICATION_ERROR.value
