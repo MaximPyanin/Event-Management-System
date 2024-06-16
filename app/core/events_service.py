@@ -1,15 +1,16 @@
-from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc, JSON
 
 from app.database.models.event import Event
 from app.database.repositories.events_repository import EventsRepository
+from app.utils.query_builder import QueryBuilder
 
 
 class EventsService:
-    def __init__(self, events_repository: EventsRepository):
+    def __init__(self, events_repository: EventsRepository,query_builder: QueryBuilder):
         self.events_repository = events_repository
+        self.query_builder = query_builder
 
     async def create_event(self, event_data: dict) -> UUID:
         event_data.update({"tag_id": event_data.pop("tag")})
@@ -24,14 +25,11 @@ class EventsService:
     async def delete_event(self, event_id: UUID) -> Event:
         return await self.events_repository.delete_one(event_id)
 
-    # what all except get will return dont know
     async def get_events(self, **kwargs):
-        data = self.parse_all(**kwargs)
         return await self.events_repository.get_many(
             kwargs.get("limit"),
             kwargs.get("offset"),
-            self.parse_sort(kwargs.get("sort")),
-            data,
+            self.parse_sort(kwargs.get("sort"))
         )
 
     def parse_sort(self, sort: str):
@@ -42,20 +40,9 @@ class EventsService:
             case _:
                 return asc(sort_params[0])
 
-    def parse_all(self, data: dict):
-        parsed_data = {}
-        if data.get("locations"):
-            parsed_data["location"] = data.get("locations").split(",")
-        if data.get("tags"):
-            parsed_data["tags"] = data.get("tags").split(",")
-        if data.get("organizer"):
-            parsed_data["username"] = data.get("organizer")
-        if data.get("from_date"):
-            parsed_data[""]
+    async def filter(self,json_data: JSON):
+        return await self.query_builder.execute_query(Event,json_data)
 
 
-# what  return typee
-"""
-limit:int,offset:int,sort: str | None,locations: str | None,from_date: datetime | None,to_date: datetime | None, tags: str | None,organizer: str | None) -> list[Event]:
-        if 
-"""
+
+

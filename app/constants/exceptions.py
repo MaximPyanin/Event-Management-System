@@ -9,3 +9,4 @@ class Exceptions(Enum):
         detail="Incorrect password or username",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    USERNAME_ERROR = HTTPException(status_code=400, detail="Username already taken")

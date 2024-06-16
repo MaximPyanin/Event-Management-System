@@ -34,7 +34,7 @@ class EventsRepository:
             return res.scalars_one()
 
     async def get_many(
-        self, limit: int, offset: int, sort: UnaryExpression | None, data: dict
+        self, limit: int, offset: int, sort: UnaryExpression | None
     ):
         async with self.db.get_sessionmaker() as session:
             stmt = (
@@ -42,7 +42,6 @@ class EventsRepository:
                 .options(selectinload(self.model.tag))
                 .options(selectinload(self.model.organizer))
                 .options(joinedload(self.model.feedbacks))
-                .filter_by(**data)
                 .order_by(sort)
                 .offset(offset)
                 .limit(limit)
@@ -61,4 +60,3 @@ class EventsRepository:
             return res.scalars().all()
 
 
-# by date what

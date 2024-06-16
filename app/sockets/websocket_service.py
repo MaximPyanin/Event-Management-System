@@ -1,4 +1,5 @@
-from fastapi import  WebSocket
+from fastapi import WebSocket
+
 
 class WebsocketService:
     def __init__(self):
@@ -17,4 +18,3 @@ class WebsocketService:
     async def broadcast(self, message: str):
         for connection in self.active_connections:
             await connection.send_text(message)
-

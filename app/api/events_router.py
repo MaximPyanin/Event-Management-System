@@ -1,7 +1,8 @@
 import datetime
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Body
+from sqlalchemy import JSON
 
 from app.auth.auth_service import AuthService
 from app.constants.tags import Tags
@@ -28,9 +29,9 @@ class EventsRouter:
             "/{event_id}", dependencies=[Depends(self.auth_service.validate_user)]
         )(self.delete_event)
         self.router.get("/")(self.get_events)
+        self.router.post('/filter')(self.filter)
         return self.router
 
-    # advanced search , how to call path inside routers of features for post here events/?
     async def create_event(self, event_data: EventCreationDto) -> dict:
         event_id = await self.events_service.create_event(event_data.model_dump())
         return {"event_id": event_id}
@@ -43,22 +44,16 @@ class EventsRouter:
 
     async def get_events(
         self,
-        locations: str = None,
-        from_date: datetime.datetime = None,
-        to_date: datetime.datetime = None,
-        tags: str = None,
         sort: str = None,
-        organizer: str = None,
         limit: int = 10,
         offset: int = 0,
     ) -> list[Event]:
         return await self.events_service.get_events(
             limit=limit,
-            locations=locations,
             offset=offset,
-            sort=sort,
-            from_date=from_date,
-            to_date=to_date,
-            tags=tags,
-            organizer=organizer,
+            sort=sort
         )
+
+    async def filter(self,to_filter: JSON =  Body()):
+        return await self.events_service.filter(to_filter)
+

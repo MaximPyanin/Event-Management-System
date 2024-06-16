@@ -39,3 +39,14 @@ class Event(Base):
     )
 
     __table_args__ = (CheckConstraint("date >= CURRENT_DATE "),)
+
+    def to_dict(self):
+        return {
+            'id': str(self.id),  # Преобразуем UUID в строку
+            'location': self.location,
+            'date': self.date.isoformat(),  # Преобразуем date в ISO формат
+            'created_at': self.created_at.isoformat(),
+            'description': self.description,
+            'tag_id': str(self.tag_id),  # Преобразуем UUID в строку
+            'organizer_id': str(self.organizer_id)  # Преобразуем UUID в строку
+        }

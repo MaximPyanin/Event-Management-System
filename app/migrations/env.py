@@ -6,6 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
 
 # this is the Alembic Config object, which provides
@@ -18,8 +19,7 @@ if config.config_file_name is not None:
 
 config.set_main_option(
     "sqlalchemy.url",
-    os.getenv("POSTGRES_URI")
-    + "?async_fallback=True",
+    os.getenv("POSTGRES_URI") + "?async_fallback=True",
 )
 
 from app.database.base import Base
