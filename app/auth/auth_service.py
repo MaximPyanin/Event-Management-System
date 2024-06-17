@@ -35,11 +35,12 @@ class AuthService:
     def decode_access_token(self, token: str | bytes) -> dict:
         return self.jwt_service.decode_jwt(token)
 
-    def validate_user(self, token: str = Depends(get_oauth2_bearer)) -> None:
+    def validate_user(self, token: str = Depends(get_oauth2_bearer)) -> dict:
         try:
             self.decode_access_token(token)
         except InvalidTokenError:
             raise Exceptions.AUTHENTICATION_ERROR.value
+        return self.decode_access_token(token)
 
     async def create_refresh_token(self, user_id: UUID, expire_days: int = 30) -> UUID:
         refresh_token = uuid.uuid4()

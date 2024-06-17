@@ -21,22 +21,22 @@ class UsersRepository:
         async with self.db.get_sessionmaker() as session:
             stmt = select(self.model).where(self.model.id == id)
             res = await session.execute(stmt)
-            return res
+            return res.scalars_one()
 
     async def get_one_by_username(self, username: str):
         async with self.db.get_sessionmaker() as session:
             stmt = select(self.model).where(self.model.username == username)
             res = await session.execute(stmt)
-            return res
+            return res.scalars_one()
 
     async def update_one(self, new_data: dict, id: UUID):
         async with self.db.get_sessionmaker() as session:
             stmt = update(self.model).values(**new_data).where(self.model.id == id)
             res = await session.execute(stmt)
-            return res
+            return res.scalars_one()
 
     async def get_one_by_token(self, token: UUID):
         async with self.db.get_sessionmaker() as session:
             stmt = select(self.model).where(self.model.refresh_token == token)
             res = await session.execute(stmt)
-            return res
+            return res.scalars_one()

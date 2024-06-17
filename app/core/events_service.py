@@ -40,8 +40,8 @@ class EventsService:
             case _:
                 return asc(sort_params[0])
 
-    async def filter(self,json_data: JSON):
-        return await self.query_builder.execute_query(Event,json_data)
+    async def get_filtered_events(self,data: dict):
+        return  await self.events_repository.get_all_by_filters(self.query_builder.execute_query(data))
 
 
 

@@ -9,7 +9,7 @@ from app.core.users_service import UsersService
 from app.schemas.user_schema import UserCreationDto
 
 
-class AuthorizationRouter:
+class AuthRouter:
     def __init__(self, auth_service: AuthService, users_service: UsersService):
         self.auth_service = auth_service
         self.users_service = users_service

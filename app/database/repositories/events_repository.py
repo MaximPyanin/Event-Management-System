@@ -59,4 +59,9 @@ class EventsRepository:
             res = await session.execute(stmt)
             return res.scalars().all()
 
+    async def get_all_by_filters(self,query: select):
+        async with self.db.get_sessionmaker() as session:
+            res = await session.execute(query)
+            return res.unique().scalars().all()
+
 

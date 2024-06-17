@@ -54,6 +54,6 @@ class EventsRouter:
             sort=sort
         )
 
-    async def filter(self,to_filter: JSON =  Body()):
-        return await self.events_service.filter(to_filter)
+    async def filter(self,to_filter: dict =  Body()):
+        return await self.events_service.get_filtered_events(to_filter)
 
