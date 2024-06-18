@@ -6,6 +6,7 @@ from app.schemas.registration_schema import RegistrationDto
 from app.core.registrations_service import RegistrationsService
 from app.notifications.email_service import EmailService
 from fastapi import APIRouter, Depends
+from app.auth.attendee_access_controller import AttendeeAccessController
 
 
 class RegistrationsRouter:
@@ -14,10 +15,12 @@ class RegistrationsRouter:
         email_service: EmailService,
         registration_service: RegistrationsService,
         users_service: UsersService,
+        attendee_access_controller: AttendeeAccessController,
         auth_service: AuthService,
     ):
         self.email_service = email_service
         self.auth_service = auth_service
+        self.attendee_access_controller = attendee_access_controller
         self.registration_service = registration_service
         self.users_service = users_service
         self.router = APIRouter(
@@ -27,8 +30,18 @@ class RegistrationsRouter:
         )
 
     def get_router(self) -> APIRouter:
-        self.router.post("/")(self.create_registration)
-        self.router.delete("/{registration_id}")(self.cancel_event)
+        self.router.post(
+            "/",
+            dependencies=[
+                Depends(self.attendee_access_controller.validate_creation_role)
+            ],
+        )(self.create_registration)
+        self.router.delete(
+            "/{registration_id}",
+            dependencies=[
+                Depends(self.attendee_access_controller.verify_registration_permission)
+            ],
+        )(self.cancel_event)
         return self.router
 
     async def create_registration(self, registration: RegistrationDto) -> dict:

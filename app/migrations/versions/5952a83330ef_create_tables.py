@@ -1,7 +1,7 @@
 """create_tables
 
 Revision ID: 5952a83330ef
-Revises: 
+Revises:
 Create Date: 2024-06-08 22:54:43.369043
 
 """

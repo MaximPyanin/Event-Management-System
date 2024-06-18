@@ -33,9 +33,7 @@ class EventsRepository:
             res = await session.execute(stmt)
             return res.scalars_one()
 
-    async def get_many(
-        self, limit: int, offset: int, sort: UnaryExpression | None
-    ):
+    async def get_many(self, limit: int, offset: int, sort: UnaryExpression | None):
         async with self.db.get_sessionmaker() as session:
             stmt = (
                 select(self.model)
@@ -59,9 +57,13 @@ class EventsRepository:
             res = await session.execute(stmt)
             return res.scalars().all()
 
-    async def get_all_by_filters(self,query: select):
+    async def get_all_by_filters(self, query: select):
         async with self.db.get_sessionmaker() as session:
             res = await session.execute(query)
             return res.unique().scalars().all()
 
-
+    async def get_one(self, id: UUID):
+        async with self.db.get_sessionmaker() as session:
+            stmt = select(self.model).where(self.model.id == id)
+            res = await session.execute(stmt)
+            return res.scalars_one()

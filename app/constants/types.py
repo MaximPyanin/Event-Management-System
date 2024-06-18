@@ -19,7 +19,7 @@ class Types:
 
 class OrmExpressions(Enum):
     BOOLEAN_FUNCTIONS = {
-        'or': lambda *clauses: or_(*clauses),
-        'and': lambda *clauses: and_(*clauses),
-        'not': lambda clause: not_(clause),
+        "or": lambda *clauses: or_(*clauses),
+        "and": lambda *clauses: and_(*clauses),
+        "not": lambda clause: not_(clause),
     }

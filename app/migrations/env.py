@@ -23,12 +23,6 @@ config.set_main_option(
 )
 
 from app.database.base import Base
-from app.database.models.event import Event
-from app.database.models.registration import Registration
-from app.database.models.feedback import Feedback
-from app.database.models.tag import Tag
-from app.database.models.user import User
-from app.database.models.role import Role
 
 # add your model's MetaData object here
 # for 'autogenerate' support

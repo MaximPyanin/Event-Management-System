@@ -10,12 +10,8 @@ class Exceptions(Enum):
         headers={"WWW-Authenticate": "Bearer"},
     )
     USERNAME_ERROR = HTTPException(status_code=400, detail="Username already taken")
-    ROLE_ERROR = HTTPException(
-        status_code=403,
-        detail="Invalid role"
-    )
+    ROLE_ERROR = HTTPException(status_code=403, detail="Invalid role")
     PERMISSION_ERROR = HTTPException(
         status_code=403,
-        detail="Access denied: You are not allowed to modify or delete events that do not belong to you."
+        detail="Access denied: You are not allowed to modify or delete events that do not belong to you.",
     )
-

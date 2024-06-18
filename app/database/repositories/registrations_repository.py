@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import insert, delete
+from sqlalchemy import insert, delete, select
 
 from app.database.db import DB
 from app.database.models.registration import Registration
@@ -20,5 +20,11 @@ class RegistrationsRepository:
     async def delete_one(self, id: UUID):
         async with self.db.get_sessionmaker() as session:
             stmt = delete(self.model).where(self.model.id == id)
+            res = await session.execute(stmt)
+            return res.scalars_one()
+
+    async def get_one(self, id: UUID):
+        async with self.db.get_sessionmaker() as session:
+            stmt = select(self.model).where(self.model.id == id)
             res = await session.execute(stmt)
             return res.scalars_one()

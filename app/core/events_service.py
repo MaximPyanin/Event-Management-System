@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import asc, desc, JSON
+from sqlalchemy import asc, desc
 
 from app.database.models.event import Event
 from app.database.repositories.events_repository import EventsRepository
@@ -8,7 +8,9 @@ from app.utils.query_builder import QueryBuilder
 
 
 class EventsService:
-    def __init__(self, events_repository: EventsRepository,query_builder: QueryBuilder):
+    def __init__(
+        self, events_repository: EventsRepository, query_builder: QueryBuilder
+    ):
         self.events_repository = events_repository
         self.query_builder = query_builder
 
@@ -29,7 +31,7 @@ class EventsService:
         return await self.events_repository.get_many(
             kwargs.get("limit"),
             kwargs.get("offset"),
-            self.parse_sort(kwargs.get("sort"))
+            self.parse_sort(kwargs.get("sort")),
         )
 
     def parse_sort(self, sort: str):
@@ -40,9 +42,7 @@ class EventsService:
             case _:
                 return asc(sort_params[0])
 
-    async def get_filtered_events(self,data: dict):
-        return  await self.events_repository.get_all_by_filters(self.query_builder.execute_query(data))
-
-
-
-
+    async def get_filtered_events(self, data: dict):
+        return await self.events_repository.get_all_by_filters(
+            self.query_builder.execute_query(data)
+        )

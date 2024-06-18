@@ -12,7 +12,6 @@ from app.utils.hash_service import HashService
 import os
 from dotenv import load_dotenv
 from alembic import op
-import sqlalchemy as sa
 
 load_dotenv()
 
