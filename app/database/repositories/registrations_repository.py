@@ -7,9 +7,9 @@ from app.database.models.registration import Registration
 
 
 class RegistrationsRepository:
-    def __init__(self, db: DB, model: Registration):
+    def __init__(self, db: DB):
         self.db = db
-        self.model = model
+        self.model = Registration
 
     async def insert_one(self, data: dict):
         async with self.db.get_sessionmaker() as session:

@@ -7,9 +7,9 @@ from app.database.models.user import User
 
 
 class UsersRepository:
-    def __init__(self, db: DB, model: User):
+    def __init__(self, db: DB):
         self.db = db
-        self.model = model
+        self.model = User
 
     async def insert_one(self, user_data: dict):
         async with self.db.get_sessionmaker() as session:

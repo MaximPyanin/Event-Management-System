@@ -9,9 +9,9 @@ from app.database.models.event import Event
 
 
 class EventsRepository:
-    def __init__(self, db: DB, model: Event):
+    def __init__(self, db: DB):
         self.db = db
-        self.model = model
+        self.model = Event
 
     async def insert_one(self, event_data: dict):
         async with self.db.get_sessionmaker() as session:

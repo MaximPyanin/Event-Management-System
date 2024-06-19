@@ -6,17 +6,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run ruff format
+      - name: ruff formatter
         uses: chartboost/ruff-action@v1
         with:
-          version: latest
           args: format
-          src: "."
 
-      - name: Run ruff check --fix
+      - name: ruff linter
         uses: chartboost/ruff-action@v1
         with:
-          version: latest
           args: check --fix
-          src: "."
 

@@ -7,9 +7,9 @@ from app.database.models.feedback import Feedback
 
 
 class FeedbacksRepository:
-    def __init__(self, db: DB, model: Feedback):
+    def __init__(self, db: DB):
         self.db = db
-        self.model = model
+        self.model = Feedback
 
     async def insert_one(self, data: dict):
         async with self.db.get_sessionmaker() as session:
