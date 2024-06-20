@@ -1,6 +1,6 @@
 from sendgrid import SendGridAPIClient
 
-from sendgrid.helpers.mail import *
+from sendgrid.helpers.mail import Email, Mail, To, PlainTextContent
 from app.services.config_service import AppConfig
 
 

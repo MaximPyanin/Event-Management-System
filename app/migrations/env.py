@@ -1,5 +1,5 @@
 from logging.config import fileConfig
-
+from app.database.base import Base
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
@@ -22,7 +22,6 @@ config.set_main_option(
     os.getenv("POSTGRES_URI") + "?async_fallback=True",
 )
 
-from app.database.base import Base
 
 # add your model's MetaData object here
 # for 'autogenerate' support

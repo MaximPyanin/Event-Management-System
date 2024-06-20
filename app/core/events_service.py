@@ -27,7 +27,7 @@ class EventsService:
     async def delete_event(self, event_id: UUID) -> Event:
         return await self.events_repository.delete_one(event_id)
 
-    async def get_events(self, **kwargs):
+    async def get_events(self, **kwargs) -> list[Event]:
         return await self.events_repository.get_many(
             kwargs.get("limit"),
             kwargs.get("offset"),
@@ -42,7 +42,7 @@ class EventsService:
             case _:
                 return asc(sort_params[0])
 
-    async def get_filtered_events(self, data: dict):
+    async def get_filtered_events(self, data: dict) -> list[Event]:
         return await self.events_repository.get_all_by_filters(
             self.query_builder.execute_query(data)
         )
