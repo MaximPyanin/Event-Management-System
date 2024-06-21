@@ -17,13 +17,12 @@ class EventsService:
     async def create_event(self, event_data: dict) -> UUID:
         event_data.update({"tag_id": event_data.pop("tag")})
         event = await self.events_repository.insert_one(event_data)
-        return event.id
+        return event
 
     async def update_event_by_id(self, new_data: dict, event_id: UUID) -> Event:
         res = await self.events_repository.update_one(new_data, event_id)
         return res
 
-    # status ok or delete result
     async def delete_event(self, event_id: UUID) -> Event:
         return await self.events_repository.delete_one(event_id)
 
@@ -36,7 +35,7 @@ class EventsService:
 
     def parse_sort(self, sort: str):
         sort_params = sort.split(",")
-        match sort_params[1]:
+        match sort_params[0]:
             case "desc":
                 return desc(sort_params[0])
             case _:

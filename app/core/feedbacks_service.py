@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from app.database.models.feedback import Feedback
 from app.database.repositories.feedbacks_repository import FeedbacksRepository
 
 
@@ -9,10 +10,10 @@ class FeedbacksService:
 
     async def create_feedback(self, data: dict) -> UUID:
         res = await self.feedback_repository.insert_one(data)
-        return res.id
+        return res
 
-    async def update_feedback(self, new_data: dict, id: UUID):
+    async def update_feedback(self, new_data: dict, id: UUID) -> Feedback:
         return await self.feedback_repository.update_one(new_data, id)
 
-    async def delete_feedback(self, id: UUID):
+    async def delete_feedback(self, id: UUID) -> Feedback:
         return await self.feedback_repository.delete_one(id)

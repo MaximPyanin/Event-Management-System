@@ -2,6 +2,7 @@ from uuid import UUID
 
 from app.auth.auth_service import AuthService
 from app.core.users_service import UsersService
+from app.database.models.registration import Registration
 from app.schemas.registration_schema import RegistrationDto
 from app.core.registrations_service import RegistrationsService
 from app.notifications.email_service import EmailService
@@ -54,7 +55,7 @@ class RegistrationsRouter:
         )
         return {"registration_id": res}
 
-    async def cancel_event(self, registration_id: UUID):
+    async def cancel_event(self, registration_id: UUID) -> Registration:
         res = await self.registration_service.delete_registration(registration_id)
         self.email_service.send_email(
             await self.users_service.get_email(res.user_id),

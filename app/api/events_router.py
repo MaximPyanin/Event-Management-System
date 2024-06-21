@@ -56,7 +56,7 @@ class EventsRouter:
     async def update_event(self, event_id: UUID, data: EventUpdateDto) -> Event:
         return await self.events_service.update_event_by_id(data.model_dump(), event_id)
 
-    async def delete_event(self, event_id: UUID):
+    async def delete_event(self, event_id: UUID) -> Event:
         return await self.events_service.delete_event(event_id)
 
     async def get_events(

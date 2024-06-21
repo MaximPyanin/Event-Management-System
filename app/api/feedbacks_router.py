@@ -3,6 +3,7 @@ from uuid import UUID
 from app.auth.auth_service import AuthService
 from app.auth.attendee_access_controller import AttendeeAccessController
 from app.core.feedbacks_service import FeedbacksService
+from app.database.models.feedback import Feedback
 from app.schemas.feedback_schema import FeedbackCreationDto, FeedbackUpdateDto
 from fastapi import APIRouter, Depends
 
@@ -44,14 +45,16 @@ class FeedbacksRouter:
         )(self.delete_feedback)
         return self.router
 
-    async def create_feedback(self, feedback: FeedbackCreationDto):
+    async def create_feedback(self, feedback: FeedbackCreationDto) -> dict:
         res = await self.feedbacks_service.create_feedback(feedback.model_dump())
         return {"feedback_id": res}
 
-    async def update_feedback(self, feedback_id: UUID, feedback: FeedbackUpdateDto):
+    async def update_feedback(
+        self, feedback_id: UUID, feedback: FeedbackUpdateDto
+    ) -> Feedback:
         return await self.feedbacks_service.update_feedback(
             feedback.model_dump(), feedback_id
         )
 
-    async def delete_feedback(self, feedback_id: UUID):
+    async def delete_feedback(self, feedback_id: UUID) -> Feedback:
         return await self.feedbacks_service.delete_feedback(feedback_id)
