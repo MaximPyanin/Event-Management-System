@@ -39,7 +39,7 @@ class AuthService:
         try:
             self.decode_access_token(token)
         except InvalidTokenError:
-            raise Exceptions.AUTHENTICATION_ERROR.value
+            raise Exceptions.TOKEN_AUTHENTICATION_ERROR.value
         return self.decode_access_token(token)
 
     async def create_refresh_token(self, user_id: UUID, expire_days: int = 30) -> UUID:
@@ -57,7 +57,7 @@ class AuthService:
     async def get_by_refresh_token(self, token: UUID) -> tuple:
         user = await self.users_repository.get_one_by_token(token)
         if not user:
-            raise Exceptions.AUTHENTICATION_ERROR.value
+            raise Exceptions.TOKEN_AUTHENTICATION_ERROR.value
         if user.expired_at <= datetime.datetime.utcnow():
-            raise Exceptions.AUTHENTICATION_ERROR.value
+            raise Exceptions.TOKEN_AUTHENTICATION_ERROR.value
         return user.id, user.role_id
