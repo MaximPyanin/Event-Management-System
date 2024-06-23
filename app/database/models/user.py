@@ -21,7 +21,7 @@ class User(Base):
     username: Mapped[str] = mapped_column(unique=True)
     email: Mapped[str]
     phone: Mapped[str]
-    password: Mapped[bytes]
+    password: Mapped[str]
     refresh_token: Mapped[UUID | None]
     expired_at: Mapped[datetime | None]
     role_id: Mapped[Roles] = mapped_column(ForeignKey("roles.id", ondelete="CASCADE"))

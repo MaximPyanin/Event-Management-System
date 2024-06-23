@@ -54,4 +54,6 @@ RUN chmod +x scripts/migration.sh
 USER appuser
 
 ENTRYPOINT ["bash","scripts/migration.sh"]
-CMD ["gunicorn", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8080"]
+CMD ["gunicorn", "app.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8080"]
+HEALTHCHECK --interval=1m --timeout=3s \
+  CMD curl -f  http://localhost:8080/api/v1/health || exit 1

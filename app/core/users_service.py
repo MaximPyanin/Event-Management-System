@@ -15,8 +15,11 @@ class UsersService:
         try:
             await self.users_repository.get_one_by_username(user_data["username"])
         except NoResultFound:
-            user_data["password"] = HashService.hash_password(user_data["password"])
-            user_data.update({"role_id": user_data.pop("role")})
+            print(user_data)
+            user_data["password"] = HashService.hash_password(
+                user_data["password"]
+            ).decode()
+            user_data.update({"role_id": user_data.pop("role").value})
             res = await self.users_repository.insert_one(user_data)
             return res
         else:

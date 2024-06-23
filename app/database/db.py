@@ -8,9 +8,11 @@ class DB:
         self.__engine = create_async_engine(
             url=config.POSTGRES_URI, isolation_level="AUTOCOMMIT"
         )
+        self.session_factory = async_sessionmaker
 
+    @property
     def get_sessionmaker(self) -> async_sessionmaker:
-        return async_sessionmaker(bind=self.__engine)
+        return self.session_factory(self.__engine)
 
     def get_engine(self) -> AsyncEngine:
         return self.__engine

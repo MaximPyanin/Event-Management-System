@@ -15,19 +15,19 @@ class UsersRepository:
         async with self.db.get_sessionmaker() as session:
             stmt = insert(self.model).values(**user_data).returning(self.model.id)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def get_one(self, id: UUID) -> User:
         async with self.db.get_sessionmaker() as session:
             stmt = select(self.model).where(self.model.id == id)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def get_one_by_username(self, username: str) -> User:
         async with self.db.get_sessionmaker() as session:
             stmt = select(self.model).where(self.model.username == username)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def update_one(self, new_data: dict, id: UUID) -> UUID:
         async with self.db.get_sessionmaker() as session:
@@ -38,10 +38,10 @@ class UsersRepository:
                 .returning(self.model.id)
             )
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def get_one_by_token(self, token: UUID) -> User:
         async with self.db.get_sessionmaker() as session:
             stmt = select(self.model).where(self.model.refresh_token == token)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()

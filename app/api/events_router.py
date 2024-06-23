@@ -33,6 +33,7 @@ class EventsRouter:
         )(self.create_event)
         self.router.put(
             "/{event_id}",
+            response_model=None,
             dependencies=[
                 Depends(self.auth_service.validate_user),
                 Depends(self.organizer_access_controller.verify_organizer_permission),
@@ -40,12 +41,13 @@ class EventsRouter:
         )(self.update_event)
         self.router.delete(
             "/{event_id}",
+            response_model=None,
             dependencies=[
                 Depends(self.auth_service.validate_user),
                 Depends(self.organizer_access_controller.verify_organizer_permission),
             ],
         )(self.delete_event)
-        self.router.get("/")(self.get_events)
+        self.router.get("/", response_model=None)(self.get_events)
         self.router.post("/filter")(self.filter)
         return self.router
 

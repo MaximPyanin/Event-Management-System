@@ -39,6 +39,7 @@ class RegistrationsRouter:
         )(self.create_registration)
         self.router.delete(
             "/{registration_id}",
+            response_model=None,
             dependencies=[
                 Depends(self.attendee_access_controller.verify_registration_permission)
             ],

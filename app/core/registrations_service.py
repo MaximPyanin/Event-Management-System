@@ -9,7 +9,7 @@ class RegistrationsService:
         self.repository = registration_repository
 
     async def create_registration(self, data: dict) -> UUID:
-        return await self.repository.insert_one(**data)
+        return await self.repository.insert_one(data)
 
     async def delete_registration(self, registration_id: UUID) -> Registration:
         return await self.repository.delete_one(registration_id)

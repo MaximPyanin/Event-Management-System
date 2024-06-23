@@ -42,3 +42,8 @@ def mock_feedbacks_service(mocker):
 @pytest.fixture
 def integration_client():
     return AsyncClient(base_url=os.getenv("APP_URL"), transport=ASGITransport(app=app))
+
+
+@pytest.fixture
+async def login():
+    credentials = await integration_client().post("/api/v1/login")

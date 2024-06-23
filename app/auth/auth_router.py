@@ -28,7 +28,7 @@ class AuthRouter:
             form_data.username, form_data.password
         )
         access_token = self.auth_service.create_access_token(user_id, role)
-        refresh_token = self.auth_service.create_refresh_token(user_id)
+        refresh_token = await self.auth_service.create_refresh_token(user_id)
         return {
             "access_token": access_token,
             "refresh_token": refresh_token,
@@ -41,7 +41,7 @@ class AuthRouter:
         )
         return {
             "access_token": self.auth_service.create_access_token(user_id, role),
-            "refresh_token": self.auth_service.create_refresh_token(user_id),
+            "refresh_token": await self.auth_service.create_refresh_token(user_id),
             "token_type": "bearer",
         }
 

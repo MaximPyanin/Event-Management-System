@@ -5,7 +5,6 @@ import datetime
 
 from app.database.repositories.events_repository import EventsRepository
 from app.services.config_service import AppConfig
-from app.constants.notifications import Notifications
 
 
 class SmsService:
@@ -19,7 +18,9 @@ class SmsService:
                 self.config.ACCOUNT_SID, self.config.AUTH_TOKEN, http_client=session
             )
             return await client.messages.create_async(
-                from_=self.config.SENDER_PHONE, body=Notifications.SMS_BODY, to=number
+                from_=self.config.SENDER_PHONE,
+                body="reminding about upcoming event",
+                to=number,
             )
 
     async def send_reminder(self) -> int:

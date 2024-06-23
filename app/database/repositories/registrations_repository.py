@@ -15,16 +15,16 @@ class RegistrationsRepository:
         async with self.db.get_sessionmaker() as session:
             stmt = insert(self.model).values(**data).returning(self.model.id)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def delete_one(self, id: UUID) -> Registration:
         async with self.db.get_sessionmaker() as session:
             stmt = delete(self.model).where(self.model.id == id).returning(self.model)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def get_one(self, id: UUID) -> Registration:
         async with self.db.get_sessionmaker() as session:
             stmt = select(self.model).where(self.model.id == id)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()

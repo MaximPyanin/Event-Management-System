@@ -1,7 +1,8 @@
 import datetime
+from typing import Sequence, Any
 from uuid import UUID
 
-from sqlalchemy import insert, update, delete, select, UnaryExpression
+from sqlalchemy import insert, update, delete, select, UnaryExpression, Row, RowMapping
 from sqlalchemy.orm import selectinload, joinedload
 
 from app.database.db import DB
@@ -17,7 +18,7 @@ class EventsRepository:
         async with self.db.get_sessionmaker() as session:
             stmt = insert(self.model).values(**event_data).returning(self.model.id)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def update_one(self, new_data: dict, event_id: UUID) -> Event:
         async with self.db.get_sessionmaker() as session:
@@ -28,7 +29,7 @@ class EventsRepository:
                 .returning(self.model)
             )
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def delete_one(self, event_id: UUID) -> Event:
         async with self.db.get_sessionmaker() as session:
@@ -38,11 +39,11 @@ class EventsRepository:
                 .returning(self.model)
             )
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()
 
     async def get_many(
         self, limit: int, offset: int, sort: UnaryExpression | None
-    ) -> list[Event]:
+    ) -> Sequence[Event]:
         async with self.db.get_sessionmaker() as session:
             stmt = (
                 select(self.model)
@@ -56,7 +57,7 @@ class EventsRepository:
             res = await session.execute(stmt)
             return res.unique().scalars().all()
 
-    async def get_all(self, date: datetime.date) -> list[Event]:
+    async def get_all(self, date: datetime.date) -> Sequence[Event]:
         async with self.db.get_sessionmaker() as session:
             stmt = (
                 select(self.model)
@@ -66,7 +67,9 @@ class EventsRepository:
             res = await session.execute(stmt)
             return res.scalars().all()
 
-    async def get_all_by_filters(self, query: select) -> list[Event]:
+    async def get_all_by_filters(
+        self, query: select
+    ) -> Sequence[Row | RowMapping | Any]:
         async with self.db.get_sessionmaker() as session:
             res = await session.execute(query)
             return res.unique().scalars().all()
@@ -75,4 +78,4 @@ class EventsRepository:
         async with self.db.get_sessionmaker() as session:
             stmt = select(self.model).where(self.model.id == id)
             res = await session.execute(stmt)
-            return res.scalars_one()
+            return res.scalar_one()

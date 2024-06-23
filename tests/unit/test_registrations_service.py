@@ -3,7 +3,6 @@ from uuid import UUID
 from app.database.models.registration import Registration
 
 
-
 @pytest.mark.asyncio
 async def test_create_registration(mock_registrations_service):
     data = {

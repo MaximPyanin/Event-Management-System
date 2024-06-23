@@ -13,4 +13,4 @@ class WebsocketRouter:
         return self.router
 
     async def get_crypto_currencies(self, websocket: WebSocket):
-        await self.get_crypto_currencies(websocket)
+        await self.crypto_service.crypto_rates(websocket)

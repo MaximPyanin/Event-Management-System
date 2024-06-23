@@ -33,12 +33,14 @@ class FeedbacksRouter:
         )(self.create_feedback)
         self.router.put(
             "/{feedback_id}",
+            response_model=None,
             dependencies=[
                 Depends(self.attendee_access_controller.verify_feedback_permission)
             ],
         )(self.update_feedback)
         self.router.delete(
             "/{feedback_id}",
+            response_model=None,
             dependencies=[
                 Depends(self.attendee_access_controller.verify_feedback_permission)
             ],
