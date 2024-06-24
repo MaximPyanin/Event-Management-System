@@ -1,3 +1,4 @@
+from typing import Sequence, Any
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Body
@@ -9,6 +10,8 @@ from app.database.models.event import Event
 from app.schemas.event_schema import EventCreationDto
 from app.core.events_service import EventsService
 from app.schemas.event_schema import EventUpdateDto
+
+from sqlalchemy import Row, RowMapping
 
 
 class EventsRouter:
@@ -48,7 +51,7 @@ class EventsRouter:
             ],
         )(self.delete_event)
         self.router.get("/", response_model=None)(self.get_events)
-        self.router.post("/filter")(self.filter)
+        self.router.post("/filter", response_model=None)(self.filter)
         return self.router
 
     async def create_event(self, event_data: EventCreationDto) -> dict:
@@ -66,10 +69,12 @@ class EventsRouter:
         sort: str = None,
         limit: int = 10,
         offset: int = 0,
-    ) -> list[Event]:
+    ) -> Sequence[Event]:
         return await self.events_service.get_events(
             limit=limit, offset=offset, sort=sort
         )
 
-    async def filter(self, to_filter: dict = Body(...)):
+    async def filter(
+        self, to_filter: dict = Body(...)
+    ) -> Sequence[Row | RowMapping | Any]:
         return await self.events_service.get_filtered_events(to_filter)

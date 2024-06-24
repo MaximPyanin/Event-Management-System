@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, CheckConstraint
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import date
 
@@ -37,5 +37,3 @@ class Event(Base):
     users: Mapped[list["User"]] = relationship(
         back_populates="events", uselist=True, secondary=Registration.__table__
     )
-
-    __table_args__ = (CheckConstraint("date >= CURRENT_DATE "),)

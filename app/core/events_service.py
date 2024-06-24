@@ -1,6 +1,7 @@
+from typing import Sequence, Any
 from uuid import UUID
 
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc, Row, RowMapping
 
 from app.database.models.event import Event
 from app.database.repositories.events_repository import EventsRepository
@@ -26,7 +27,7 @@ class EventsService:
     async def delete_event(self, event_id: UUID) -> Event:
         return await self.events_repository.delete_one(event_id)
 
-    async def get_events(self, **kwargs) -> list[Event]:
+    async def get_events(self, **kwargs) -> Sequence[Event]:
         return await self.events_repository.get_many(
             kwargs.get("limit"),
             kwargs.get("offset"),
@@ -34,14 +35,15 @@ class EventsService:
         )
 
     def parse_sort(self, sort: str):
-        sort_params = sort.split(",")
-        match sort_params[0]:
-            case "desc":
-                return desc(sort_params[0])
-            case _:
-                return asc(sort_params[0])
+        if sort:
+            sort_params = sort.split(",")
+            match sort_params[0]:
+                case "desc":
+                    return desc(sort_params[0])
+                case _:
+                    return asc(sort_params[0])
 
-    async def get_filtered_events(self, data: dict) -> list[Event]:
+    async def get_filtered_events(self, data: dict) -> Sequence[Row | RowMapping | Any]:
         return await self.events_repository.get_all_by_filters(
             self.query_builder.execute_query(data)
         )

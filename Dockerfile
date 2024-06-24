@@ -19,6 +19,7 @@ RUN \
     && adduser --system --uid 1001 --gid 1001 --no-create-home appuser \
     && apt-get update \
     && apt-get upgrade -y \
+    && apt-get install -y curl \
     && pip install --upgrade pip \
     && pip install poetry==${POETRY_VERSION} \
     && apt-get autoremove -y \

@@ -1,7 +1,6 @@
 from uuid import UUID
 
 import pytest
-from tests.conftest import integration_client
 
 
 @pytest.mark.asyncio

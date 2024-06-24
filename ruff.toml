@@ -1,5 +1,5 @@
 [lint]
-ignore = ["E721","F401"]
+ignore = ["E721"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
