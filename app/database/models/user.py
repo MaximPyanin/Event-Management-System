@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 from app.database.base import Base
 from app.constants.types import Types
-from app.constants.roles import Roles
+from app.constants.user_roles import UserRoles
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -24,7 +24,9 @@ class User(Base):
     password: Mapped[str]
     refresh_token: Mapped[UUID | None]
     expired_at: Mapped[datetime | None]
-    role_id: Mapped[Roles] = mapped_column(ForeignKey("roles.id", ondelete="CASCADE"))
+    role_id: Mapped[UserRoles] = mapped_column(
+        ForeignKey("roles.id", ondelete="CASCADE")
+    )
 
     role: Mapped["Role"] = relationship(back_populates="users", uselist=False)
     organized_events: Mapped[list["Event"]] = relationship(

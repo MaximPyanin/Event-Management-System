@@ -5,14 +5,14 @@ from datetime import date, datetime
 from pydantic import BaseModel, field_validator
 
 
-from app.constants.tags import Tags
+from app.constants.event_tags import EventTags
 
 
 class EventCreationDto(BaseModel):
     location: str
     date: date
     description: str
-    tag: Tags
+    tag: EventTags
     organizer_id: uuid.UUID
 
     @field_validator("date")

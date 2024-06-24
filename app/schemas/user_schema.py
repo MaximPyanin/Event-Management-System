@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from pydantic import EmailStr
-from app.constants.roles import Roles
+from app.constants.user_roles import UserRoles
 
 
 class UserCreationDto(BaseModel):
@@ -8,4 +8,4 @@ class UserCreationDto(BaseModel):
     email: EmailStr
     phone: str
     password: str
-    role: Roles
+    role: UserRoles

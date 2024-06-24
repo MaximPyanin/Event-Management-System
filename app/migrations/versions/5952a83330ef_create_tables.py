@@ -25,7 +25,7 @@ def upgrade() -> None:
         "roles",
         sa.Column(
             "id",
-            sa.Enum("ADMIN", "ORGANIZER", "ATTENDEE", name="Roles"),
+            sa.Enum("ADMIN", "ORGANIZER", "ATTENDEE", name="userroles"),
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),
@@ -34,7 +34,7 @@ def upgrade() -> None:
         "tags",
         sa.Column(
             "id",
-            sa.Enum("CONCERT", "BALLET", "FOOTBALL", name="Tags"),
+            sa.Enum("CONCERT", "BALLET", "FOOTBALL", name="eventtags"),
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),
@@ -53,7 +53,7 @@ def upgrade() -> None:
         sa.Column("password", sa.LargeBinary(), nullable=False),
         sa.Column(
             "role_id",
-            sa.Enum("ADMIN", "ORGANIZER", "ATTENDEE", name="Roles"),
+            sa.Enum("ADMIN", "ORGANIZER", "ATTENDEE", name="userroles"),
             nullable=False,
         ),
         sa.ForeignKeyConstraint(["role_id"], ["roles.id"], ondelete="CASCADE"),
@@ -79,7 +79,7 @@ def upgrade() -> None:
         sa.Column("description", sa.String(), nullable=False),
         sa.Column(
             "tag_id",
-            sa.Enum("CONCERT", "BALLET", "FOOTBALL", name="Tags"),
+            sa.Enum("CONCERT", "BALLET", "FOOTBALL", name="eventtags"),
             nullable=False,
         ),
         sa.Column(

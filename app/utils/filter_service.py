@@ -1,4 +1,4 @@
-from app.constants.tags import Tags
+from app.constants.event_tags import EventTags
 from app.database.models.event import Event
 
 
@@ -12,11 +12,11 @@ class FilterService:
     def to_expression(self):
         field = getattr(self.model_class, self.field)
         if self.op == "==":
-            if isinstance(self.value, Tags):
+            if isinstance(self.value, EventTags):
                 self.value = self.value.value
             return field == self.value
         elif self.op == "!=":
-            if isinstance(self.value, Tags):
+            if isinstance(self.value, EventTags):
                 self.value = self.value.value
             return field != self.value
         elif self.op == "like":
@@ -29,13 +29,13 @@ class FilterService:
             return field.isnot(None)
         elif self.op == "in":
             if isinstance(self.value, list) and all(
-                isinstance(val, Tags) for val in self.value
+                isinstance(val, EventTags) for val in self.value
             ):
                 self.value = [val.value for val in self.value]
             return field.in_(self.value)
         elif self.op == "not_in":
             if isinstance(self.value, list) and all(
-                isinstance(val, Tags) for val in self.value
+                isinstance(val, EventTags) for val in self.value
             ):
                 self.value = [val.value for val in self.value]
             return field.not_in(self.value)

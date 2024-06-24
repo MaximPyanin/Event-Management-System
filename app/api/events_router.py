@@ -70,6 +70,7 @@ class EventsRouter:
         limit: int = 10,
         offset: int = 0,
     ) -> Sequence[Event]:
+        print(limit, offset)
         return await self.events_service.get_events(
             limit=limit, offset=offset, sort=sort
         )

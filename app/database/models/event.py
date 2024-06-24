@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import date
 
-from app.constants.tags import Tags
+from app.constants.event_tags import EventTags
 from app.database.base import Base
 from app.constants.types import Types
 
@@ -20,7 +20,7 @@ class Event(Base):
     date: Mapped[date]
     created_at: Mapped[Types.CREATED_AT]
     description: Mapped[str]
-    tag_id: Mapped[Tags] = mapped_column(ForeignKey("tags.id", ondelete="CASCADE"))
+    tag_id: Mapped[EventTags] = mapped_column(ForeignKey("tags.id", ondelete="CASCADE"))
     organizer_id: Mapped[Types.UUID_PK] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE")
     )
