@@ -1,6 +1,4 @@
-from app.constants.event_tags import EventTags
-from app.database.models.event import Event
-
+from app.database.models.event import Event, EventTags
 
 class FilterService:
     def __init__(self, filter_spec):
@@ -19,6 +17,14 @@ class FilterService:
             if isinstance(self.value, EventTags):
                 self.value = self.value.value
             return field != self.value
+        elif self.op == ">":
+            return field > self.value
+        elif self.op == ">=":
+            return field >= self.value
+        elif self.op == "<":
+            return field < self.value
+        elif self.op == "<=":
+            return field <= self.value
         elif self.op == "like":
             return field.like(self.value)
         elif self.op == "ilike":
@@ -33,11 +39,5 @@ class FilterService:
             ):
                 self.value = [val.value for val in self.value]
             return field.in_(self.value)
-        elif self.op == "not_in":
-            if isinstance(self.value, list) and all(
-                isinstance(val, EventTags) for val in self.value
-            ):
-                self.value = [val.value for val in self.value]
-            return field.not_in(self.value)
         else:
             raise ValueError(f"Unknown operator {self.op}")

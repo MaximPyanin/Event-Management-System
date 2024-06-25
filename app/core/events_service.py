@@ -39,9 +39,9 @@ class EventsService:
             sort_params = sort.split(",")
             match sort_params[0]:
                 case "desc":
-                    return desc(sort_params[0])
+                    return desc(sort_params[1])
                 case _:
-                    return asc(sort_params[0])
+                    return asc(sort_params[1])
 
     async def get_filtered_events(self, data: dict) -> Sequence[Row | RowMapping | Any]:
         return await self.events_repository.get_all_by_filters(
