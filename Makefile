@@ -10,3 +10,5 @@ new-migration:
 autogenerate-migration:
 	@echo "generating new migration"
 	alembic revision --autogenerate
+deploy_prod:
+	spot -t prod -v -i ./inventory.yml -k ~/event-managemet-service.pem

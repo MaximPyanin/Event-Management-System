@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import DATE
 from app.utils.filter_service import FilterService
 from app.constants.types import OrmExpressions
 from app.database.models.event import Event
-from asyncio import *
+
 
 class QueryBuilder:
     def __init__(self, db):
@@ -45,19 +45,24 @@ class QueryBuilder:
             elif "and" in filter_spec:
                 and_filters = [self.build_filters(f) for f in filter_spec["and"]]
                 return and_(*and_filters)
-            elif (
-                    filter_spec["field"] == "date"
-                    and filter_spec["op"] in ("==", ">", "<", ">=", "<=")
+            elif filter_spec["field"] == "date" and filter_spec["op"] in (
+                "==",
+                ">",
+                "<",
+                ">=",
+                "<=",
             ):
                 date_value = datetime.fromisoformat(filter_spec["value"])
                 return self.model_class.date.cast(DATE) == cast(date_value, DATE)
             elif (
-                    "field" in filter_spec
-                    and filter_spec["field"] == "tag_id"
-                    and filter_spec["op"] == "=="
+                "field" in filter_spec
+                and filter_spec["field"] == "tag_id"
+                and filter_spec["op"] == "=="
             ):
                 return FilterService(filter_spec).to_expression()
-            elif any(key in filter_spec for key in OrmExpressions.BOOLEAN_FUNCTIONS.value):
+            elif any(
+                key in filter_spec for key in OrmExpressions.BOOLEAN_FUNCTIONS.value
+            ):
                 key = next(iter(filter_spec.keys()))
                 return OrmExpressions.BOOLEAN_FUNCTIONS.value[key](
                     *[self.build_filters(f) for f in filter_spec[key]]

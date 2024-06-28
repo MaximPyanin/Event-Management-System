@@ -1,5 +1,6 @@
 from app.database.models.event import Event, EventTags
 
+
 class FilterService:
     def __init__(self, filter_spec):
         self.model_class = Event

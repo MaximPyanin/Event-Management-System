@@ -21,7 +21,6 @@ class AppConfig:
     PAPERTRAIL_PORT: int
 
     SENDGRID_API_KEY: str
-    DOMAIN: str
 
     def __init__(self, env):
         for field in self.__annotations__:

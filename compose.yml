@@ -1,9 +1,33 @@
 services:
+  gateway:
+    image: traefik:v3.0
+    restart: unless-stopped
+    environment:
+      - TRAEFIK_CERTIFICATESRESOLVERS_LE_ACME_EMAIL=${EMAIL}
+    ports:
+      - 80:80
+      - 443:443/tcp
+      - 443:443/udp
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt-data:/letsencrypt
+      - ./traefik.yml:/etc/traefik/traefik.yaml
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`${DASHBOARD_DOMAIN}`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.entrypoints=https"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=${DASHBOARD_AUTH}"
+      - "traefik.http.routers.dashboard.middlewares=dashboard-auth"
   app:
     build: .
     restart: unless-stopped
-    ports:
-      - 8080:8080
+    expose:
+      - 8080
+    networks:
+      - proxy
     environment:
         SENDGRID_API_KEY: ${SENDGRID_API_KEY}
         ACCOUNT_SID: ${ACCOUNT_SID}
@@ -13,22 +37,38 @@ services:
         POSTGRES_URI: ${POSTGRES_URI}
         PAPERTRAIL_HOST: ${PAPERTRAIL_HOST}
         PAPERTRAIL_PORT: ${PAPERTRAIL_PORT}
-        DOMAIN: ${DOMAIN}
+       # DOMAIN: ${DOMAIN}
         PRIVATE_KEY: ${PRIVATE_KEY}
         PUBLIC_KEY: ${PUBLIC_KEY}
         ADMIN_PASSWORD: ${ADMIN_PASSWORD}
     depends_on:
       - postgres
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.strip-app.stripprefix.prefixes=/api"
+      - "traefik.http.routers.app.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.app.entrypoints=https"
+      - "traefik.http.routers.app.middlewares=strip-app@docker"
+      -  "traefik.http.routers.tls=true"
+      - "traefik.http.routers.tls.certresolver=${CERT_RESOLVER}"
 
   postgres:
     image: postgres:16-alpine
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
     restart: unless-stopped
+    networks:
+      - proxy
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+
 volumes:
   postgres-data:
+  letsencrypt-data:
+
+networks:
+  proxy:
+    external: true

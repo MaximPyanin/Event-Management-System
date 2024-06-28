@@ -17,16 +17,16 @@ providers:
 
 entryPoints:
   web:
-    address: :80
+    address: ":80"
     http:
       redirections:
         entryPoint:
-          to: web-secure
+          to: https
           scheme: https
           permanent: true
 
   https:
-    address: :443
+    address: ":443"
     http3:
       advertisedPort: 443
     http:
