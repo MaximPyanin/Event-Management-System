@@ -12,8 +12,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt-data:/letsencrypt
       - ./traefik.yml:/etc/traefik/traefik.yaml
-    networks:
-      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`${DASHBOARD_DOMAIN}`)"
@@ -26,8 +24,6 @@ services:
     restart: unless-stopped
     expose:
       - 8080
-    networks:
-      - proxy
     environment:
         SENDGRID_API_KEY: ${SENDGRID_API_KEY}
         ACCOUNT_SID: ${ACCOUNT_SID}
@@ -37,7 +33,6 @@ services:
         POSTGRES_URI: ${POSTGRES_URI}
         PAPERTRAIL_HOST: ${PAPERTRAIL_HOST}
         PAPERTRAIL_PORT: ${PAPERTRAIL_PORT}
-       # DOMAIN: ${DOMAIN}
         PRIVATE_KEY: ${PRIVATE_KEY}
         PUBLIC_KEY: ${PUBLIC_KEY}
         ADMIN_PASSWORD: ${ADMIN_PASSWORD}
@@ -45,10 +40,8 @@ services:
       - postgres
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.strip-app.stripprefix.prefixes=/api"
       - "traefik.http.routers.app.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.app.entrypoints=https"
-      - "traefik.http.routers.app.middlewares=strip-app@docker"
       -  "traefik.http.routers.tls=true"
       - "traefik.http.routers.tls.certresolver=${CERT_RESOLVER}"
 
@@ -57,8 +50,6 @@ services:
     expose:
       - 5432
     restart: unless-stopped
-    networks:
-      - proxy
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
@@ -68,7 +59,3 @@ services:
 volumes:
   postgres-data:
   letsencrypt-data:
-
-networks:
-  proxy:
-    external: true

@@ -12,7 +12,6 @@ api:
 providers:
   docker:
     exposedByDefault: false
-    network: proxy
     watch: true
 
 entryPoints:

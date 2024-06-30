@@ -11,8 +11,7 @@ from app.database.repositories.feedbacks_repository import FeedbacksRepository
 from app.database.repositories.registrations_repository import RegistrationsRepository
 from app.database.repositories.users_repository import UsersRepository
 from app.utils.query_builder import QueryBuilder
-from httpx import AsyncClient, ASGITransport
-from app.main import app
+from httpx import AsyncClient
 
 load_dotenv()
 
@@ -41,4 +40,4 @@ def mock_feedbacks_service(mocker):
 
 @pytest.fixture
 def integration_client():
-    return AsyncClient(base_url=os.getenv("APP_URL"), transport=ASGITransport(app=app))
+    return AsyncClient(base_url=os.getenv("APP_URL"))

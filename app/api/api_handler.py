@@ -52,7 +52,7 @@ class APIHandler:
         self.app.include_router(self.events_router.get_router())
         self.app.add_middleware(
             CORSMiddleware,
-            allow_origins=["http://localhost:63342"],
+            allow_origins=["http://localhost:3000"],
             allow_credentials=True,
             allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
             allow_headers=[

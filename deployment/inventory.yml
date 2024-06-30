@@ -1,3 +1,0 @@
-groups:
-  prod:
-    - {host: "xxxxxxxxx", port: 22, user: "ec2-user"}
