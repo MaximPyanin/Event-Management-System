@@ -15,7 +15,6 @@ class UsersService:
         try:
             await self.users_repository.get_one_by_username(user_data["username"])
         except NoResultFound:
-            print(user_data)
             user_data["password"] = HashService.hash_password(
                 user_data["password"]
             ).decode()

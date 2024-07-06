@@ -10,6 +10,9 @@ from app.database.repositories.events_repository import EventsRepository
 from app.database.repositories.feedbacks_repository import FeedbacksRepository
 from app.database.repositories.registrations_repository import RegistrationsRepository
 from app.database.repositories.users_repository import UsersRepository
+from app.services.config_service import AppConfig
+from app.utils.filter_service import FilterService
+from app.utils.jwt_service import JWTService
 from app.utils.query_builder import QueryBuilder
 from httpx import AsyncClient
 
@@ -41,3 +44,15 @@ def mock_feedbacks_service(mocker):
 @pytest.fixture
 def integration_client():
     return AsyncClient(base_url=os.getenv("APP_URL"))
+
+@pytest.fixture
+def jwt_service():
+    config = AppConfig(os.environ)
+    return JWTService(config)
+
+
+@pytest.fixture
+def filter_service_factory():
+    def _create_filter_service(filter_spec):
+        return FilterService(filter_spec)
+    return _create_filter_service

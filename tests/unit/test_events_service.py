@@ -62,7 +62,7 @@ async def test_delete_event(mock_events_service):
 
 @pytest.mark.asyncio
 async def test_get_events(mock_events_service):
-    kwargs = {"limit": 10, "offset": 0, "sort": "asc"}
+    kwargs = {"limit": 10, "offset": 0, "sort": "asc,location"}
     expected_result = [
         Event(
             id=UUID("555b998c-f268-4ed4-a925-b4d6b84a7efd"),
