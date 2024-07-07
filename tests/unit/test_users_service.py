@@ -6,6 +6,7 @@ from sqlalchemy.exc import NoResultFound
 from app.database.models.user import User
 from app.constants.user_roles import UserRoles
 
+
 @pytest.mark.asyncio
 async def test_create_user(mock_users_service):
     user_data = {

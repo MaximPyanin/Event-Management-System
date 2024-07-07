@@ -45,6 +45,7 @@ def mock_feedbacks_service(mocker):
 def integration_client():
     return AsyncClient(base_url=os.getenv("APP_URL"))
 
+
 @pytest.fixture
 def jwt_service():
     config = AppConfig(os.environ)
@@ -55,4 +56,5 @@ def jwt_service():
 def filter_service_factory():
     def _create_filter_service(filter_spec):
         return FilterService(filter_spec)
+
     return _create_filter_service
