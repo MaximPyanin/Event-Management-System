@@ -2,9 +2,9 @@ name: Unit tests
 
 on:
   push:
-    branches: [ "main","feature/http-server" ]
+    branches: [ "main", "feature/http-server" ]
   pull_request:
-    branches: [ "main","feature/http-server" ]
+    branches: [ "main", "feature/http-server" ]
 
 permissions:
   contents: read
@@ -31,5 +31,16 @@ jobs:
       run: |
         poetry install
     - name: Test with pytest
+      env:
+        SENDGRID_API_KEY: ${{ vars.SENDGRID_API_KEY }}
+        ACCOUNT_SID: ${{ vars.ACCOUNT_SID }}
+        AUTH_TOKEN: ${{ vars.AUTH_TOKEN }}
+        SENDER_PHONE: ${{ vars.SENDER_PHONE }}
+        SENDER_EMAIL: ${{ vars.SENDER_EMAIL }}
+        POSTGRES_URI: ${{ vars.POSTGRES_URI }}
+        PAPERTRAIL_HOST: ${{ vars.PAPERTRAIL_HOST }}
+        PAPERTRAIL_PORT: ${{ vars.PAPERTRAIL_PORT }}
+        PUBLIC_KEY: ${{ vars.PUBLIC_KEY }}
+        PRIVATE_KEY: ${{ vars.PRIVATE_KEY }}
       run: |
         poetry run pytest tests
