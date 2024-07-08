@@ -1,0 +1,39 @@
+log:
+  level: INFO
+
+global:
+  checkNewVersion: true
+
+api:
+  insecure: true
+  dashboard: true
+
+
+providers:
+  docker:
+    exposedByDefault: false
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+          permanent: true
+
+  https:
+    address: ":443"
+    http3:
+      advertisedPort: 443
+    http:
+      tls:
+        certResolver: le
+
+certificatesResolvers:
+  le:
+    acme:
+      httpChallenge:
+        entryPoint: web

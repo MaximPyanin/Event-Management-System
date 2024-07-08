@@ -1,0 +1,46 @@
+name: Unit tests
+
+on:
+  push:
+    branches: [ "main", "feature/http-server" ]
+  pull_request:
+    branches: [ "main", "feature/http-server" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.5.1"]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v2
+      with:
+        poetry-version: ${{ matrix.poetry-version }}
+    - name: Install dependencies
+      run: |
+        poetry install
+    - name: Test with pytest
+      env:
+        SENDGRID_API_KEY: ${{ vars.SENDGRID_API_KEY }}
+        ACCOUNT_SID: ${{ vars.ACCOUNT_SID }}
+        AUTH_TOKEN: ${{ vars.AUTH_TOKEN }}
+        SENDER_PHONE: ${{ vars.SENDER_PHONE }}
+        SENDER_EMAIL: ${{ vars.SENDER_EMAIL }}
+        POSTGRES_URI: ${{ vars.POSTGRES_URI }}
+        PAPERTRAIL_HOST: ${{ vars.PAPERTRAIL_HOST }}
+        PAPERTRAIL_PORT: ${{ vars.PAPERTRAIL_PORT }}
+        PUBLIC_KEY: ${{ vars.PUBLIC_KEY }}
+        PRIVATE_KEY: ${{ vars.PRIVATE_KEY }}
+      run: |
+        poetry run pytest tests

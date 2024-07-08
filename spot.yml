@@ -1,0 +1,17 @@
+task:
+  - name: git checkout
+    script: git clone git@github.com:MaximPyanin/Event-Management-System.git
+    cond: "[ ! -d ~/Event-Management-System/.git ]"
+
+  - name: git pull/update
+    script: |
+      cd ~/Event-Management-System
+      git checkout feature/http-server
+      git pull
+
+  - name: pull docker images and restart
+    script: |
+      cd ~/Event-Management-System
+      docker compose down
+      docker compose pull
+      docker compose up -d --build
